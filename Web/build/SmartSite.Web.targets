@@ -1,0 +1,51 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<!-- 
+		Precompiled Razor views
+	-->
+	
+	<Import Condition="Exists('$(SolutionDir)\packages\RazorGenerator.MsBuild.2.0.1\tools\RazorGenerator.targets')" Project="$(SolutionDir)\packages\RazorGenerator.MsBuild.2.0.1\tools\RazorGenerator.targets" />
+
+	<Target Name="GenerateRazorViews" AfterTargets="BeforeBuild" Condition="$(Configuration) == 'Release'" Inputs="" Outputs="">
+		<Message Importance="High" Text="Generating Razor Views..." />
+		<CallTarget Targets="PrecompileRazorFiles" />
+	</Target>
+
+	<Target Name="NukeObjCodeGenViewsFolder" AfterTargets="Clean" Inputs="" Outputs="">
+		<Message Importance="High" Text="Nuking obj/CodeGen/Views folder..." />
+		<RemoveDir Directories="obj/CodeGen/Views" />
+	</Target>
+
+	<!-- 
+		Web config transform before each build.
+	-->
+
+	<PropertyGroup>
+		<CurrentEnvironment Condition="Exists('$(SolutionDir)\environment.txt')">$([System.IO.File]::ReadAllText('$(SolutionDir)\environment.txt').Trim())</CurrentEnvironment>
+
+		<BuildConfig>Web.$(Configuration).config</BuildConfig>
+		<EnvironmentConfig>Web.$(CurrentEnvironment).config</EnvironmentConfig>
+	</PropertyGroup>
+
+	<Target Name="TransformWebConfig" AfterTargets="BeforeBuild" Inputs="Web.base.config,Web.$(Configuration).config,Web.$(CurrentEnvironment).config" Outputs="Web.config">
+
+		<Error Condition="!Exists('../environment.txt')" Text="You must create an environment.txt file. If you are in Visual Studio, in the package management console try running: Set-Environment 'Local'" />
+
+		<Error Condition="!Exists($(BuildConfig))" Text="$(Configuration) is not a supported build configuration, $(BuildConfig) does not exist." />
+		<Error Condition="!Exists($(EnvironmentConfig))" Text="$(CurrentEnvironment) is not a supported environment, $(EnvironmentConfig) does not exist." />
+
+		<Message Importance="High" Text="&#xD;&#xA;***************************&#xD;&#xA;Building for: $(CurrentEnvironment)&#xD;&#xA;***************************" />
+		
+		<Message Importance="High" Text="*** Replace Web.config with Web.base.config..." />
+		<Copy SourceFiles="Web.Base.config" DestinationFiles="Web.config" />
+		
+		<Message Importance="High" Text="*** Applying $(BuildConfig) transform..." />
+		<TransformXml Source="Web.config" Transform="$(BuildConfig)" Destination="Web.config" />
+		
+		<Message Importance="High" Text="*** Applying $(EnvironmentConfig) transform..." />
+		<TransformXml Source="Web.config" Transform="$(EnvironmentConfig)" Destination="Web.config" />
+		
+		<Message Importance="High" Text="***************************" />
+	</Target>
+
+</Project>

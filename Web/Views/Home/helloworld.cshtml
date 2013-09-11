@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Hello World</title>
+</head>
+<body>
+    <div>
+        <dl>
+            <dt>Assembly</dt>
+            <dd>@HttpContext.Current.ApplicationInstance.GetType().BaseType.Assembly.GetName().Name</dd>
+            <dt>Version</dt>
+            <dd>@HttpContext.Current.ApplicationInstance.GetType().BaseType.Assembly.GetName().Version.ToString()</dd>
+            <dt>Processor Architecture</dt>
+            <dd>@HttpContext.Current.ApplicationInstance.GetType().BaseType.Assembly.GetName().ProcessorArchitecture.ToString()</dd>
+            <dt>CodeBase</dt>
+            <dd>@HttpContext.Current.ApplicationInstance.GetType().BaseType.Assembly.GetName().CodeBase</dd>
+        </dl>
+    </div>
+</body>
+</html>
