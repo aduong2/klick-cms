@@ -2,6 +2,7 @@
 set targetFile=%1
 set targetCfg=%2
 
+
 IF "%targetFile%"=="" (
  ECHO No target specified.  Using the solution file.
  targetFile=Sony.WOF.sln
