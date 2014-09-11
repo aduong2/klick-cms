@@ -1,4 +1,4 @@
-tesrtjskl
+tesrtjsk afdskll
 
 @echo off
 set targetFile=%1
