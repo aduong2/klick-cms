@@ -1,4 +1,3 @@
-test
 
 @echo off
 set targetFile=%1
