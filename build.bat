@@ -1,4 +1,4 @@
-
+hi
 @echo off
 set targetFile=%1
 set targetCfg=%2
