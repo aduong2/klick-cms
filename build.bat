@@ -28,3 +28,4 @@ call %msbuild.exe% %targetFile% /p:Configuration=%targetCfg%
 pause
 :end 
 test
+test
