@@ -50,5 +50,18 @@ namespace Klick.CMS
                 xmlErrorLog.Log(new Elmah.Error(new Exception("POST"), System.Web.HttpContext.Current));
 			#endif
         }
+        
+	
+	void Application_PostRequestHandlerExecute(Object sender, EventArgs e)
+        {
+            #if DEBUG
+            
+            #else
+				// Get Elmah to log all our post requests			
+				string postlogpath = System.Configuration.ConfigurationManager.AppSettings["PostLogPath"] ?? HttpContext.Current.Request.PhysicalApplicationPath + "/PostLogs/";
+				Elmah.XmlFileErrorLog xmlErrorLog = new Elmah.XmlFileErrorLog(postlogpath);
+                xmlErrorLog.Log(new Elmah.Error(new Exception("POST"), System.Web.HttpContext.Current));
+			#endif
+        }
     }
 }
